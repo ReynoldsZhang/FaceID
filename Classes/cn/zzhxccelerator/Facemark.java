@@ -31,7 +31,7 @@ public class Facemark {
 	 * @throws InterruptedException
 	 */
 	
-	public static int[][] getFacemarks(String PhotoNameAndLocation, String CreateMarkers)
+	public static int[][] getFacemarks(String PhotoNameAndLocation, String CreateMarkers, String fileName)
 			throws IOException, URISyntaxException, InterruptedException {
 
 		/**
@@ -63,7 +63,7 @@ public class Facemark {
 		 */
 
 		Mat gray = new Mat();
-		cvtColor(img, gray, COLOR_BGR2GRAY);
+		 cvtColor(img, gray, COLOR_BGR2GRAY);
 		equalizeHist(gray, gray);
 
 		/**
@@ -174,8 +174,8 @@ public class Facemark {
 					 * This will display the results in a window
 					 */
 					
-					imshow("Kazemi Facial Landmark" , img);
-					cvWaitKey(0);
+//					imshow("Kazemi Facial Landmark" , img);
+//					cvWaitKey(0);
 					
 				}
 
@@ -187,7 +187,7 @@ public class Facemark {
 		/**
 		 * Saves a photo with the landmarks
 		 */
-			imwrite("Photos\\cn.zzhxccelerator.Facemark Output\\" + "Facemark_Output_"+ "1" +".jpg", img);
+			imwrite("Photos\\Facemark Output\\" + "Facemark_Output_"+ fileName+".jpg", img);
 		
 		}
 

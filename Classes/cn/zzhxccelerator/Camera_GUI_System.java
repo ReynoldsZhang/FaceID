@@ -27,6 +27,9 @@ import javax.swing.border.Border;
 import java.awt.*;
 import com.opencsv.CSVWriter;
 
+import static cn.zzhxccelerator.GetFaceMarks.keepTakingPhotos;
+import static cn.zzhxccelerator.GetFaceMarks.processImage;
+
 public class Camera_GUI_System {
 
 	boolean BaseFaceSet = false;
@@ -328,7 +331,7 @@ public class Camera_GUI_System {
 
 								takeBasePhoto("Base_Photo_1");
 								Facemarks = Facemark.getFacemarks("Photos\\Base Photos\\" + "Base_Photo_1" + ".png",
-										FacemarkSetting);
+										FacemarkSetting, "Base_Photo_1");
 
 								if (Facemarks == null) {
 
@@ -337,6 +340,7 @@ public class Camera_GUI_System {
 								}
 
 							} while (Facemarks == null);
+							processImage("Photos\\Base Photos\\" + "Base_Photo_1" + ".png", "Base_Photo_1");
 
 							addProcessingText("Taken Photo 1 ↻");
 
@@ -350,13 +354,14 @@ public class Camera_GUI_System {
 							do {
 								takeBasePhoto("Base_Photo_2");
 								Facemarks = Facemark.getFacemarks("Photos\\Base Photos\\" + "Base_Photo_2" + ".png",
-										FacemarkSetting);
+										FacemarkSetting, "Base_Photo_2");
 
 								if (Facemarks == null) {
 									addProcessingText("Error with Photo Two");
 								}
 
 							} while (Facemarks == null);
+							processImage("Photos\\Base Photos\\" + "Base_Photo_2" + ".png", "Base_Photo_2");
 
 							addProcessingText("Taken Photo 2 ↻");
 
@@ -371,13 +376,14 @@ public class Camera_GUI_System {
 								takeBasePhoto("Base_Photo_3");
 								Facemarks = Facemark.getFacemarks(
 										"Photos\\Base Photos\\" + "Base_Photo_3" + ".png",
-										FacemarkSetting);
+										FacemarkSetting, "Base_Photo_3");
 
 								if (Facemarks == null) {
 									addProcessingText("Error with Photo Three");
 								}
 
 							} while (Facemarks == null);
+							processImage("Photos\\Base Photos\\" + "Base_Photo_3" + ".png", "Base_Photo_3");
 
 							addProcessingText("Taken Photo 3 ↻");
 
