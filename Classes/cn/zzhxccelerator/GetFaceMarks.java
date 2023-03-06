@@ -69,6 +69,7 @@ public class GetFaceMarks {
 
                 if (Facemarks == null) {
                     cameraSystem.addProcessingText("Error with taken photo");
+                    continue;
                 } else {
                     processImage("Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png", "Photo_taken_" + numberOfPhoto);
                     cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
