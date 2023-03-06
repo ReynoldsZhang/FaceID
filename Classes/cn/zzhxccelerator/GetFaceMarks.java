@@ -35,14 +35,16 @@ public class GetFaceMarks {
                 cameraSystem.takePhoto("Photo_taken_" + numberOfPhoto);
 
                 Facemarks = Facemark.getFacemarks(
-                        "Photos\\Camera Photos" + "Photo_ taken_" + numberOfPhoto + ".png",
-                        FacemarkSetting, "Photo_ taken_" + numberOfPhoto);
+                        "Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png",
+                        FacemarkSetting, "Photo_taken_" + numberOfPhoto);
 
                 if (Facemarks == null) {
                     cameraSystem.addProcessingText("Error with taken photo");
                 } else {
-                    processImage("Photos\\Camera Photos" + "Photo_ taken_" + numberOfPhoto + ".png", "Photo_ taken_" + numberOfPhoto);
+                    processImage("Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png", "Photo_taken_" + numberOfPhoto);
+                    cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
                 }
+            numberOfPhoto++;
         } while (true);
     }
 }
