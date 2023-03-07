@@ -85,6 +85,8 @@ public class GetFaceMarks {
                 cameraSystem.updateLockedStatus(false);
             }
             Date endTime = new Date();
+
+            cameraSystem.addProcessingTime(String.valueOf(endTime.getTime() - startTime.getTime()));
             cameraSystem.addFaceIDData("Photo_taken_" + numberOfPhoto, String.valueOf(numberOfPhoto),
                     "SimlarityScore", "SimlarityScorePassingMark", "LockOrUnLock"
             , String.valueOf(endTime.getTime() - startTime.getTime()));
