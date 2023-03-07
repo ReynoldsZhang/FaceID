@@ -2,11 +2,11 @@ package cn.zzhxccelerator;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 public class GetFaceMarks {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         runFaceID();
-
         //cn.zzhxccelerator.Facemark.getFacemarks("D:\\Projects\\FaceID\\Photos\\Base Photos\\Base_Photo_1.png", "drawFacemarks");
     }
 
@@ -77,9 +77,17 @@ public class GetFaceMarks {
                 }
              //TODO
             //call the function tha compare each picture with the bas photos
+            Date startTime = new Date();
             {
-
+                //if TRUE
+                cameraSystem.updateLockedStatus(true);
+                //if FALSE
+                cameraSystem.updateLockedStatus(false);
             }
+            Date endTime = new Date();
+            cameraSystem.addFaceIDData("Photo_taken_" + numberOfPhoto, String.valueOf(numberOfPhoto),
+                    "SimlarityScore", "SimlarityScorePassingMark", "LockOrUnLock"
+            , String.valueOf(endTime.getTime() - startTime.getTime()));
 
             numberOfPhoto++;
         } while (true);
