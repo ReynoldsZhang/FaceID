@@ -73,6 +73,7 @@ public class GetFaceMarks {
                 } else {
                     processImage("Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png", "Photo_taken_" + numberOfPhoto);
                     cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
+                    cameraSystem.updateIdentifiedImagePhoto("Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png");
                 }
              //TODO
             //call the function tha compare each picture with the bas photos
