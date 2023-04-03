@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
+import cn.zzhxccelerator.util.Utils;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
@@ -286,9 +287,9 @@ public class Camera_GUI_System {
 
 							addProcessingText("Taking Base Photos ↻");
 
-							File Photo1 = new File("Photos\\Base Photos\\" + "Base_Photo_1" + ".png");
-							File Photo2 = new File("Photos\\Base Photos\\" + "Base_Photo_2" + ".png");
-							File Photo3 = new File("Photos\\Base Photos\\" + "Base_Photo_3" + ".png");
+							File Photo1 = new File(Utils.getPath("Photos", "Base Photos", "Base_Photo_1" + ".png"));
+							File Photo2 = new File(Utils.getPath("Photos", "Base Photos", "Base_Photo_2" + ".png"));
+							File Photo3 = new File(Utils.getPath("Photos", "Base Photos", "Base_Photo_3" + ".png"));
 
 							if (Photo1.delete()) {
 
@@ -330,7 +331,7 @@ public class Camera_GUI_System {
 							do {
 
 								takeBasePhoto("Base_Photo_1");
-								Facemarks = Facemark.getFacemarks("Photos\\Base Photos\\" + "Base_Photo_1" + ".png",
+								Facemarks = Facemark.getFacemarks(Utils.getPath("Photos", "Base Photos", "Base_Photo_1" + ".png"),
 										FacemarkSetting, "Base_Photo_1");
 
 								if (Facemarks == null) {
@@ -340,7 +341,7 @@ public class Camera_GUI_System {
 								}
 
 							} while (Facemarks == null);
-							processImage("Photos\\Base Photos\\" + "Base_Photo_1" + ".png", "Base_Photo_1");
+							processImage(Utils.getPath("Photos", "Base Photos", "Base_Photo_1" + ".png"), "Base_Photo_1");
 
 							addProcessingText("Taken Photo 1 ↻");
 
@@ -353,7 +354,7 @@ public class Camera_GUI_System {
 
 							do {
 								takeBasePhoto("Base_Photo_2");
-								Facemarks = Facemark.getFacemarks("Photos\\Base Photos\\" + "Base_Photo_2" + ".png",
+								Facemarks = Facemark.getFacemarks(Utils.getPath("Photos" , "Base Photos", "Base_Photo_2" + ".png"),
 										FacemarkSetting, "Base_Photo_2");
 
 								if (Facemarks == null) {
@@ -361,7 +362,7 @@ public class Camera_GUI_System {
 								}
 
 							} while (Facemarks == null);
-							processImage("Photos\\Base Photos\\" + "Base_Photo_2" + ".png", "Base_Photo_2");
+							processImage(Utils.getPath("Photos", "Base Photos", "Base_Photo_2" + ".png"), "Base_Photo_2");
 
 							addProcessingText("Taken Photo 2 ↻");
 
@@ -375,7 +376,7 @@ public class Camera_GUI_System {
 							do {
 								takeBasePhoto("Base_Photo_3");
 								Facemarks = Facemark.getFacemarks(
-										"Photos\\Base Photos\\" + "Base_Photo_3" + ".png",
+										Utils.getPath("Photos", "Base Photos", "Base_Photo_3" + ".png"),
 										FacemarkSetting, "Base_Photo_3");
 
 								if (Facemarks == null) {
@@ -383,7 +384,7 @@ public class Camera_GUI_System {
 								}
 
 							} while (Facemarks == null);
-							processImage("Photos\\Base Photos\\" + "Base_Photo_3" + ".png", "Base_Photo_3");
+							processImage(Utils.getPath("Photos", "Base Photos", "Base_Photo_3" + ".png"), "Base_Photo_3");
 
 							addProcessingText("Taken Photo 3 ↻");
 
@@ -400,7 +401,7 @@ public class Camera_GUI_System {
 
 						BaseFaceSet = true;
 
-						updateWholeImage("Photos\\Base Photos\\" + "Base_Photo_2" + ".png");
+						updateWholeImage(Utils.getPath("Photos", "Base Photos", "Base_Photo_2" + ".png"));
 
 						addProcessingText("Completed Taking Photos");
 
@@ -490,7 +491,7 @@ public class Camera_GUI_System {
 	public String takePhoto(String PhotoName) throws IOException {
 
 		BufferedImage image = webcam.getImage();
-		ImageIO.write(image, "PNG", new File("Photos\\Camera Photos\\" + PhotoName + ".png"));
+		ImageIO.write(image, "PNG", new File(Utils.getPath("Photos", "Camera Photos", PhotoName + ".png")));
 
 		return PhotoName;
 
@@ -499,7 +500,7 @@ public class Camera_GUI_System {
 	public String takeBasePhoto(String PhotoName) throws IOException {
 
 		BufferedImage image = webcam.getImage();
-		ImageIO.write(image, "PNG", new File("Photos\\Base Photos\\" + PhotoName + ".png"));
+		ImageIO.write(image, "PNG", new File(Utils.getPath("Photos", "Base Photos", PhotoName + ".png")));
 
 		return PhotoName;
 
@@ -672,7 +673,7 @@ public class Camera_GUI_System {
 	 * @return
 	 */
 	public static boolean WriteToDatabase(String[] DataToWrite) {
-		createWriter("Photos\\" + DatabaseName);
+		createWriter(Utils.getPath("Photos", DatabaseName));
 		writer.writeNext(DataToWrite);
 		return true;
 

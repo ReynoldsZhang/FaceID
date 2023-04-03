@@ -1,5 +1,7 @@
 package cn.zzhxccelerator;
 
+import cn.zzhxccelerator.util.Utils;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -7,23 +9,10 @@ import java.util.Date;
 public class GetFaceMarks {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
         runFaceID();
-        //cn.zzhxccelerator.Facemark.getFacemarks("D:\\Projects\\FaceID\\Photos\\Base Photos\\Base_Photo_1.png", "drawFacemarks");
     }
 
     /**
-     * the method used to calculate the distance with two points.
-     * @param x1 point1 xRay
-     * @param x2 point2 xRay
-     * @param y1 point1 yRay
-     * @param y2 point2 yRay
-     * @return
-     */
-    public static double form(double x1, double x2, double y1, double y2){
-        return Math.sqrt(Math.pow(x1 + x2, 2) + Math.pow(y1 + y2, 2));
-    }
-
-    /**
-     * the function used to drawFacemarks
+     * draw facemarks
      * @param FileNameAndLocation
      * @param fileName
      * @throws IOException
@@ -64,16 +53,16 @@ public class GetFaceMarks {
                 cameraSystem.takePhoto("Photo_taken_" + numberOfPhoto);
 
                 Facemarks = Facemark.getFacemarks(
-                        "Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png",
+                        Utils.getPath("Photos", "Camera Photos" , "Photo_taken_" + numberOfPhoto + ".png"),
                         FacemarkSetting, "Photo_taken_" + numberOfPhoto);
 
                 if (Facemarks == null) {
                     cameraSystem.addProcessingText("Error with taken photo");
                     continue;
                 } else {
-                    processImage("Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png", "Photo_taken_" + numberOfPhoto);
+                    processImage(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"), "Photo_taken_" + numberOfPhoto);
                     cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
-                    cameraSystem.updateIdentifiedImagePhoto("Photos\\Camera Photos\\Photo_taken_" + numberOfPhoto + ".png");
+                    cameraSystem.updateIdentifiedImagePhoto(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"));
                 }
              //TODO
             //call the function tha compare each picture with the bas photos

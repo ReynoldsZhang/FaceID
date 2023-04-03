@@ -63,7 +63,7 @@ public class Face extends Weightable implements Serializable {
 
     public static Face getFace(String path) {
         try {
-            int[][] xys = Facemark.getFacemarks(path, "NumberedPoints");
+            int[][] xys = Facemark.getFacemarks(path, "NumberedPoints", "");
             if (xys == null) {
                 throw new RuntimeException("No face detected or more than one face detected.");
             }
