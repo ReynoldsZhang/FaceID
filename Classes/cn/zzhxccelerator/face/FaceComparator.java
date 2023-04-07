@@ -1,5 +1,6 @@
 package cn.zzhxccelerator.face;
 
+import cn.zzhxccelerator.util.CompareResult;
 import cn.zzhxccelerator.weight.Weight;
 
 import java.lang.reflect.Method;
@@ -7,65 +8,53 @@ import java.util.Arrays;
 
 public class FaceComparator {
     /**
-     * @param base the base face
+     * @param base  the base face
      * @param other the other face
-     * @return the percentage of difference
+     * @return the compare result, which contains a differenceSum and a ratioSum
      * @see Face
      */
-    public static double compare(Face base, Face other) {
+    public static CompareResult compare(Face base, Face other) {
+        // if one of the face is null, return 0
         if (base == null || other == null) {
-            return 0;
+            return new CompareResult(0.0, 0.0);
         }
+        // get all the methods in Face.class
         Method[] methods = Face.class.getDeclaredMethods();
-        double d = Arrays.stream(methods).mapToDouble(method -> {
-            if (method.isAnnotationPresent(Weight.class)) {
-                try {
-                    double percentage = (double) method.invoke(other) / (double) method.invoke(base);
-                    return Math.abs(1 - percentage) * method.getAnnotation(Weight.class).value();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return 0;
-        }).sum();
-//        System.out.println("==================================");
-//        System.out.println("Face " + base.file.getName() + " to Face " + other.file.getName() + ": " + d);
-//        System.out.println("==================================");
-//        double percentageOfTwoEyesWidth = other.getTwoEyesWidthPercentage() / base.getTwoEyesWidthPercentage();
-//        double percentageOfTwoEyesGap = other.getGapInEyesPercentage() / base.getGapInEyesPercentage();
-//        double percentageOfLeftEyeWidth = other.getLeftEyeWidthPercentage() / base.getLeftEyeWidthPercentage();
-//        double percentageOfRightEyeWidth = other.getRightEyeWidthPercentage() / base.getRightEyeWidthPercentage();
-//        double percentageOfLeftEyeHeight = other.getLeftEyeHeightPercentage() / base.getLeftEyeHeightPercentage();
-//        double percentageOfRightEyeHeight = other.getRightEyeHeightPercentage() / base.getRightEyeHeightPercentage();
-//        double percentageOfNoseWidth = other.getNoseWidthPercentage() / base.getNoseWidthPercentage();
-//        double percentageOfNoseHeight = other.getNoseHeightPercentageOfEyesWidth() / base.getNoseHeightPercentageOfEyesWidth();
-//        double percentageOfMouthWidth = other.getMouthWidthPercentage() / base.getMouthWidthPercentage();
-//        double percentageOfMouthHeight = other.getMouthHeightPercentage() / base.getMouthHeightPercentage();
-//        double percentageOfLeftQuadrantA = other.getLeftEyebrowQuadraticA() / base.getLeftEyebrowQuadraticA();
-//        double percentageOfRightQuadrantA = other.getRightEyebrowQuadraticA() / base.getRightEyebrowQuadraticA();
-//        double percentageOfWidthHeightRatio = other.getFaceWidthHeightRatio() / base.getFaceWidthHeightRatio();
-//        double percentageOfLeftEyebrowHeight = other.getLeftEyeBrowPercentage() / base.getLeftEyeBrowPercentage();
-//        double percentageOfRightEyebrowHeight = other.getRightEyeBrowPercentage() / base.getRightEyeBrowPercentage();
-//        double percentageOfNoseWidthHeightRatio = other.getNoseWidthHeightRatio() / base.getNoseWidthHeightRatio();
-//        double percentageOfMouseNoseWidthRatio = other.getMouthNoseWidthRatio() / base.getMouthNoseWidthRatio();
-//        System.out.println(percentageOfTwoEyesWidth);
-//        System.out.println(percentageOfTwoEyesGap);
-//        System.out.println(percentageOfLeftEyeWidth);
-//        System.out.println(percentageOfRightEyeWidth);
-//        System.out.println(percentageOfLeftEyeHeight);
-//        System.out.println(percentageOfRightEyeHeight);
-//        System.out.println(percentageOfNoseWidth);
-//        System.out.println(percentageOfNoseHeight);
-//        System.out.println(percentageOfMouthWidth);
-//        System.out.println(percentageOfMouthHeight);
-//        System.out.println(percentageOfLeftQuadrantA);
-//        System.out.println(percentageOfRightQuadrantA);
-//        System.out.println(percentageOfWidthHeightRatio);
-//        System.out.println(percentageOfLeftEyebrowHeight);
-//        System.out.println(percentageOfRightEyebrowHeight);
-//        System.out.println(percentageOfNoseWidthHeightRatio);
-//        System.out.println(percentageOfMouseNoseWidthRatio);
+        // iterate all the methods
+        double differenceSum = Arrays.stream(methods).mapToDouble(method -> {
+                    // if the method is annotated with @Weight
+                    if (method.isAnnotationPresent(Weight.class)) {
+                        try {
+                            // get the difference of the two methods' result
+                            double diff = (double) method.invoke(other) - (double) method.invoke(base);
+                            // return the absolute value of the difference * the weight
+                            return Math.abs(diff) * method.getAnnotation(Weight.class).value();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return 0;
+                })
+                // sum all the differences
+                .sum();
 
-        return d;
+        // iterate all the methods
+        double ratioSum = Arrays.stream(methods).mapToDouble(method -> {
+                    // if the method is annotated with @Weight
+                    if (method.isAnnotationPresent(Weight.class)) {
+                        try {
+                            // get the ratio of the two methods' result
+                            double percentage = (double) method.invoke(other) / (double) method.invoke(base);
+                            // return the absolute value of the difference * the weight
+                            return Math.abs(1 - percentage) * method.getAnnotation(Weight.class).value();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return 0;
+                })
+                // sum all the ratios
+                .sum();
+        return new CompareResult(differenceSum, ratioSum);
     }
 }

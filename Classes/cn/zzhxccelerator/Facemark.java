@@ -82,6 +82,8 @@ public class Facemark {
 
 		if (faces.size() != 1) {
 			System.out.println(" More than 1 face or no Faces Detected");
+			img.release();
+			gray.release();
 			return null;
 		}
 
@@ -192,6 +194,9 @@ public class Facemark {
 			imwrite(Utils.getPath("Photos", "Facemark Output", "Facemark_Output_" + fileName +".jpg"), img);
 
 		}
+
+		img.release();
+		gray.release();
 
 		/**
 		 * Returns a 2D Array of Facial Landmarks

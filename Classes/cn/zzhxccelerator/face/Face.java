@@ -51,7 +51,7 @@ public class Face extends Weightable implements Serializable {
      * length: 20
      */
 
-    private final Pos[] faceMarks;
+    public final Pos[] faceMarks;
 
     public Face(int[][] facemarks, String path) {
         this.faceMarks = new Pos[68];
@@ -144,14 +144,13 @@ public class Face extends Weightable implements Serializable {
      * @param o the object to compare
      * @return whether the two faces are equal
      */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Face face = (Face) o;
-        return FaceComparator.compare(this, face) > 0.9;
-    }
-
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Face face = (Face) o;
+//        return FaceComparator.compare(this, face) > 0.9;
+//    }
     @Override
     public int hashCode() {
         return Arrays.hashCode(faceMarks);
@@ -164,87 +163,87 @@ public class Face extends Weightable implements Serializable {
                 '}';
     }
 
-    @Weight(0.12)
+    @Weight(12)
     public double getTwoEyesWidthPercentage() {
         return getTwoEyesWidth() / getFaceWidth();
     }
 
-    @Weight(0.08)
+    @Weight(8)
     public double getGapInEyesPercentage() {
         return getTwoEyesGap() / getFaceWidth();
     }
 
-    @Weight(0.04)
+    @Weight(2)
     public double getLeftEyeWidthPercentage() {
         return getLeftEyeWidth() / getFaceWidth();
     }
 
-    @Weight(0.04)
+    @Weight(2)
     public double getRightEyeWidthPercentage() {
         return getRightEyeWidth() / getFaceWidth();
     }
 
-    @Weight(0.02)
+    @Weight(2)
     public double getLeftEyeHeightPercentage() {
         return getLeftEyeHeight() / getNoseHeight();
     }
 
-    @Weight(0.02)
+    @Weight(2)
     public double getRightEyeHeightPercentage() {
         return getRightEyeHeight() / getNoseHeight();
     }
 
-    @Weight(0.05)
+    @Weight(5)
     public double getNoseWidthPercentage() {
         return getNoseWidth() / getFaceWidth();
     }
 
-    @Weight(0.12)
+    @Weight(12)
     public double getNoseHeightPercentageOfEyesWidth() {
         return getNoseHeight() / getTwoEyesWidth();
     }
 
-    @Weight(0.03)
+    @Weight(5)
     public double getMouthWidthPercentage() {
         return getMouthWidth() / getFaceWidth();
     }
 
-    @Weight(0.03)
+    @Weight(3)
     public double getMouthHeightPercentage() {
         return getMouthHeight() / getHalfFaceHeight();
     }
 
-    @Weight(0.01)
+    @Weight(2)
     public double getLeftEyebrowQuadraticA() {
         return getQuadraticA(this.faceMarks[17], this.faceMarks[19], this.faceMarks[21]);
     }
 
-    @Weight(0.04)
+    @Weight(2)
     public double getRightEyebrowQuadraticA() {
         return getQuadraticA(this.faceMarks[22], this.faceMarks[24], this.faceMarks[26]);
     }
 
-    @Weight(0.04)
+    @Weight(2)
     public double getFaceWidthHeightRatio() {
         return getFaceWidth() / getHalfFaceHeight();
     }
 
-    @Weight(0.05)
+    @Weight(3)
     public double getLeftEyeBrowPercentage() {
         return getLeftEyebrowWidth() / getFaceWidth();
     }
 
-    @Weight(0.05)
+    @Weight(3)
     public double getRightEyeBrowPercentage() {
         return getRightEyebrowWidth() / getFaceWidth();
     }
 
-    @Weight(0.08)
+    @Weight(8)
     public double getNoseWidthHeightRatio() {
         return getNoseWidth() / getNoseHeight();
     }
 
-    @Weight(0.03)
+    @Weight(5)
     public double getMouthNoseWidthRatio() {
         return getMouthWidth() / getNoseWidth();
     }

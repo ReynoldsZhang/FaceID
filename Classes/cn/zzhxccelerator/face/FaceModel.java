@@ -1,5 +1,7 @@
 package cn.zzhxccelerator.face;
 
+import cn.zzhxccelerator.util.CompareResult;
+
 public class FaceModel {
     public final Face face1;
     public final Face face2;
@@ -17,11 +19,30 @@ public class FaceModel {
         this.face3 = Face.getFace(face3);
     }
 
-    public double compare(Face face) {
-        double d1 = FaceComparator.compare(face1, face);
-        double d2 = FaceComparator.compare(face2, face);
-        double d3 = FaceComparator.compare(face3, face);
-        double d = (d1 + d2 + d3) / 3;
-        return d;
+    /**
+     * @param face the face to compare
+     * @return the average compare result
+     */
+    public CompareResult getCompareResult(Face face) {
+        // using three base faces to compare
+        CompareResult face1Result = FaceComparator.compare(face1, face);
+        CompareResult face2Result = FaceComparator.compare(face2, face);
+        CompareResult face3Result = FaceComparator.compare(face3, face);
+        // get the average difference and ratio
+        double averageDiff = (face1Result.diff + face2Result.diff + face3Result.diff) / 3;
+        double averagePercentage = (face1Result.ratio + face2Result.ratio + face3Result.ratio) / 3;
+        return new CompareResult(averageDiff, averagePercentage);
+    }
+
+    /**
+     * @param face the face to compare
+     * @return true if the face is passed, false otherwise
+     */
+    public boolean compare(Face face) {
+        return getCompareResult(face).isPassed();
+    }
+
+    public boolean compare(String facePath) {
+        return getCompareResult(Face.getFace(facePath)).isPassed();
     }
 }
