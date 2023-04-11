@@ -13,6 +13,14 @@ public class CompareResult {
         this.ratio = ratio;
     }
 
+    public double getDiff() {
+        return diff;
+    }
+
+    public double getRatio() {
+        return ratio;
+    }
+
     @Override
     public String toString() {
         return "(" + diff + ", " + ratio + ")";

@@ -1,10 +1,17 @@
 package cn.zzhxccelerator;
 
+import cn.zzhxccelerator.face.Face;
+import cn.zzhxccelerator.face.FaceModel;
+import cn.zzhxccelerator.util.CompareResult;
 import cn.zzhxccelerator.util.Utils;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Date;
+
+import static cn.zzhxccelerator.face.Face.getFace;
 
 public class GetFaceMarks {
     public static void main(String[] args) throws IOException, URISyntaxException, InterruptedException {
@@ -50,38 +57,92 @@ public class GetFaceMarks {
         int numberOfPhoto = 0;
         int[][] Facemarks = null;
         do {
-                cameraSystem.takePhoto("Photo_taken_" + numberOfPhoto);
+            cameraSystem.takePhoto("Photo_taken_" + numberOfPhoto);
 
-                Facemarks = Facemark.getFacemarks(
-                        Utils.getPath("Photos", "Camera Photos" , "Photo_taken_" + numberOfPhoto + ".png"),
-                        FacemarkSetting, "Photo_taken_" + numberOfPhoto);
+            Facemarks = Facemark.getFacemarks(
+                    Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"),
+                    FacemarkSetting, "Photo_taken_" + numberOfPhoto);
 
-                if (Facemarks == null) {
-                    cameraSystem.addProcessingText("Error with taken photo");
-                    continue;
-                } else {
-                    processImage(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"), "Photo_taken_" + numberOfPhoto);
-                    cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
-                    cameraSystem.updateIdentifiedImagePhoto(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"));
-                }
-             //TODO
+            if (Facemarks == null) {
+                cameraSystem.addProcessingText("Error with taken photo");
+                continue;
+            } else {
+                processImage(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"), "Photo_taken_" + numberOfPhoto);
+                cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
+                cameraSystem.updateIdentifiedImagePhoto(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"));
+            }
+            //TODO
             //call the function tha compare each picture with the bas photos
             Date startTime = new Date();
+            boolean isTheSameFace;
             {
-                //if TRUE
-                cameraSystem.updateLockedStatus(true);
-                //if FALSE
-                cameraSystem.updateLockedStatus(false);
+                // example:
+                // create face model by giving three image paths
+                FaceModel model = new FaceModel("Photos/Base Photos/Base_Photo_1.png", "Photos/Base Photos/Base_Photo_2.png", "Photos/Base Photos/Base_Photo_3.png");
+                isTheSameFace = model.compare("Photo_taken_" + numberOfPhoto);
+
+                if (isTheSameFace) {
+                    //if TRUE
+                    cameraSystem.updateLockedStatus(true);
+                } else {
+                    //if FALSE
+                    cameraSystem.updateLockedStatus(false);
+                }
             }
             Date endTime = new Date();
 
+
             cameraSystem.addProcessingTime(String.valueOf(endTime.getTime() - startTime.getTime()));
             cameraSystem.addFaceIDData("Photo_taken_" + numberOfPhoto, String.valueOf(numberOfPhoto),
-                    "SimilarityScore", "SimilarityScorePassingMark", "LockOrUnLock"
-            , String.valueOf(endTime.getTime() - startTime.getTime()));
+                    "SimilarityScore", "77%", isTheSameFace ? "Lock" : "Unlock"
+                    , String.valueOf(endTime.getTime() - startTime.getTime()));
 
             numberOfPhoto++;
+            cameraSystem.updateLockedStatus(false);
         } while (true);
+    }
+
+    public static void testAllFace(FaceModel base, int num) {
+        File dir = new File("Photos/Camera Photos/Photo_taken_" + num + ".jpg");
+        // create error log
+        File log = new File("error.txt");
+        // clear log
+        try (FileWriter fw = new FileWriter(log)) {
+            fw.write("");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // get all images in the folder
+        String[] files = dir.list();
+        if (files == null) {
+            throw new RuntimeException("No files in the folder");
+        }
+        // iterate all images
+        for (int i = 0; i < files.length; i++) {
+            System.out.println("index " + i + " of " + files.length + ": " + files[i]);
+            // get face
+            Face face = getFace(Utils.getPath("Photos/Camera Photos/Photo_taken_" + num + ".jpg", files[i]));
+            // if face is null, skip
+            if (face == null) {
+                continue;
+            }
+            // compare
+            CompareResult result = base.getCompareResult(face);
+            if (!result.isPassed()) {
+                System.out.println("\u001B[31m" + face.file.getName() + " failed: " + result.diff + ", " + result.ratio + "\u001B[0m");
+                try (FileWriter fw = new FileWriter(log, true)) {
+                    fw.write(face.file.getName() + " failed: " + result.diff + ", " + result.ratio + "\n");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                System.out.println("\u001B[32m" + face.file.getName() + " passed: " + result.diff + ", " + result.ratio + "\u001B[0m");
+            }
+            // gc, release memory every 20 images
+            if (i % 20 == 0) {
+                System.gc();
+            }
+        }
     }
 }
 
