@@ -3,7 +3,6 @@ package cn.zzhxccelerator.face;
 import cn.zzhxccelerator.Facemark;
 import cn.zzhxccelerator.util.Pos;
 import cn.zzhxccelerator.weight.Weight;
-import cn.zzhxccelerator.weight.Weightable;
 
 import java.io.File;
 import java.io.Serializable;
