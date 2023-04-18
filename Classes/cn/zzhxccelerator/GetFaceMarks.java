@@ -92,6 +92,7 @@ public class GetFaceMarks {
                 //if FALSE
                 cameraSystem.updateLockedStatus(false);
                 isLocked = "Lock";
+                System.out.println("no");
             }
 
             Date endTime = new Date();
@@ -103,7 +104,7 @@ public class GetFaceMarks {
                     , String.valueOf(endTime.getTime() - startTime.getTime()));
 
             numberOfPhoto++;
-            cameraSystem.updateLockedStatus(false);
+            //cameraSystem.updateLockedStatus(false);
         } while (true);
     }
 
