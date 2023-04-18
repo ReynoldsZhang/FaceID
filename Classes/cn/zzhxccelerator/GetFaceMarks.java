@@ -71,7 +71,7 @@ public class GetFaceMarks {
                 cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
                 cameraSystem.updateIdentifiedImagePhoto(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"));
             }
-            Face face = getFace(Utils.getPath("Photos\\Facemark Output\\Facemark_Output_" + numberOfPhoto + ".jpg"));
+            Face face = getFace(Utils.getPath("Photos", "Facemark Output", "Facemark_Output_Photo_taken_" + numberOfPhoto + ".jpg"));
 
             //TODO
             //call the function tha compare each picture with the bas photos
@@ -100,7 +100,7 @@ public class GetFaceMarks {
 
             cameraSystem.addProcessingTime(String.valueOf(endTime.getTime() - startTime.getTime()));
             cameraSystem.addFaceIDData("Photo_taken_" + numberOfPhoto, String.valueOf(numberOfPhoto),
-                    String.valueOf(isTheSameFace.ratio), "77%", isLocked
+                    String.valueOf(100.0 - isTheSameFace.diff), "77%", isLocked
                     , String.valueOf(endTime.getTime() - startTime.getTime()));
 
             numberOfPhoto++;
