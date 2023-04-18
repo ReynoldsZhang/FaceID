@@ -33,17 +33,9 @@ public class FaceModel {
         double averageDiff = (face1Result.diff + face2Result.diff + face3Result.diff) / 3;
         double averagePercentage = (face1Result.ratio + face2Result.ratio + face3Result.ratio) / 3;
         CompareResult getDif = new CompareResult(averageDiff, averagePercentage);
-        setDifere(averagePercentage);
         return getDif;
     }
 
-    public void setDifere(double difere){
-        this.difere = difere;
-    }
-
-    public double getDifere(){
-        return this.difere;
-    }
 
     /**
      * @param face the face to compare

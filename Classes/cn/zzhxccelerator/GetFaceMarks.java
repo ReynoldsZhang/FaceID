@@ -71,19 +71,20 @@ public class GetFaceMarks {
                 cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
                 cameraSystem.updateIdentifiedImagePhoto(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"));
             }
+            Face face = getFace(Utils.getPath("Photos\\Facemark Output\\Facemark_Output_" + numberOfPhoto + ".jpg"));
 
             //TODO
             //call the function tha compare each picture with the bas photos
             Date startTime = new Date();
 
-            boolean isTheSameFace;
             // example:
             // create face model by giving three image paths
-            FaceModel model = new FaceModel("Photos/Base Photos/Base_Photo_1.png", "Photos/Base Photos/Base_Photo_2.png", "Photos/Base Photos/Base_Photo_3.png");
-            isTheSameFace = model.compare("Photos/Camera Photos/Photo_taken_" + numberOfPhoto);
+            FaceModel model = new FaceModel("Photos\\Base Photos\\Base_Photo_1.png", "Photos\\Base Photos\\Base_Photo_2.png", "Photos\\Base Photos\\Base_Photo_3.png");
+            CompareResult isTheSameFace = model.getCompareResult(face);
+
             String isLocked = "";
 
-            if (isTheSameFace) {
+            if (isTheSameFace.isPassed()) {
                 //if TRUE
                 cameraSystem.updateLockedStatus(true);
                 isLocked = "Unlock";
@@ -94,16 +95,15 @@ public class GetFaceMarks {
             }
 
             Date endTime = new Date();
-            System.out.println(model.getDifere());
 
 
             cameraSystem.addProcessingTime(String.valueOf(endTime.getTime() - startTime.getTime()));
             cameraSystem.addFaceIDData("Photo_taken_" + numberOfPhoto, String.valueOf(numberOfPhoto),
-                    String.valueOf(model.getDifere()), "77%", isLocked
+                    String.valueOf(isTheSameFace.ratio), "77%", isLocked
                     , String.valueOf(endTime.getTime() - startTime.getTime()));
 
             numberOfPhoto++;
-            //cameraSystem.updateLockedStatus(false);
+            cameraSystem.updateLockedStatus(false);
         } while (true);
     }
 
