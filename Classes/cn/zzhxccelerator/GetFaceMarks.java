@@ -100,7 +100,7 @@ public class GetFaceMarks {
 
             cameraSystem.addProcessingTime(String.valueOf(endTime.getTime() - startTime.getTime()));
             cameraSystem.addFaceIDData("Photo_taken_" + numberOfPhoto, String.valueOf(numberOfPhoto),
-                    String.valueOf(100.0 - isTheSameFace.diff), "77%", isLocked
+                    String.valueOf(10.0 - isTheSameFace.diff), "77%", isLocked
                     , String.valueOf(endTime.getTime() - startTime.getTime()));
 
             numberOfPhoto++;
