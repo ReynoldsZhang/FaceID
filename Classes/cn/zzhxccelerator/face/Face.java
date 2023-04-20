@@ -140,17 +140,6 @@ public class Face extends Weightable implements Serializable {
         return distance(faceMarks[51], faceMarks[57]);
     }
 
-    /**
-     * @param o the object to compare
-     * @return whether the two faces are equal
-     */
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Face face = (Face) o;
-//        return FaceComparator.compare(this, face) > 0.9;
-//    }
     @Override
     public int hashCode() {
         return Arrays.hashCode(faceMarks);

@@ -6,7 +6,6 @@ public class FaceModel {
     public final Face face1;
     public final Face face2;
     public final Face face3;
-    private double difere;
 
     public FaceModel(Face face1, Face face2, Face face3) {
         this.face1 = face1;

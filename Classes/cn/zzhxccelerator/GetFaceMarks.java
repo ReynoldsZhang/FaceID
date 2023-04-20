@@ -41,6 +41,7 @@ public class GetFaceMarks {
         do{
             if(camerSystem.BaseFaceSet){
                 keepTakingPhotos(camerSystem);
+                break;
             }
         }while(true);
     }
@@ -67,14 +68,16 @@ public class GetFaceMarks {
                 cameraSystem.addProcessingText("Error with taken photo");
                 continue;
             } else {
+                //After taking photo, edit the photo and put is into Facemark output
                 processImage(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"), "Photo_taken_" + numberOfPhoto);
                 cameraSystem.addProcessingText("Complete taking photo No." + numberOfPhoto);
                 cameraSystem.updateIdentifiedImagePhoto(Utils.getPath("Photos", "Camera Photos", "Photo_taken_" + numberOfPhoto + ".png"));
             }
+            //get the photo that edited and create the face model
             Face face = getFace(Utils.getPath("Photos", "Facemark Output", "Facemark_Output_Photo_taken_" + numberOfPhoto + ".jpg"));
 
             //TODO
-            //call the function tha compare each picture with the bas photos
+            //starte to compare
             Date startTime = new Date();
 
             // example:
@@ -92,15 +95,14 @@ public class GetFaceMarks {
                 //if FALSE
                 cameraSystem.updateLockedStatus(false);
                 isLocked = "Lock";
-                System.out.println("no");
             }
 
             Date endTime = new Date();
 
-
+            //put the information into the CSV file
             cameraSystem.addProcessingTime(String.valueOf(endTime.getTime() - startTime.getTime()));
             cameraSystem.addFaceIDData("Photo_taken_" + numberOfPhoto, String.valueOf(numberOfPhoto),
-                    String.valueOf(10.0 - isTheSameFace.diff), "77%", isLocked
+                    String.valueOf((10.0 - isTheSameFace.diff) * 10), "77%", isLocked
                     , String.valueOf(endTime.getTime() - startTime.getTime()));
 
             numberOfPhoto++;
@@ -109,7 +111,7 @@ public class GetFaceMarks {
     }
 
     public static void testAllFace(FaceModel base, int num) {
-        File dir = new File("Photos/Camera Photos/Photo_taken_" + num + ".jpg");
+        File dir = new File("Photos\\Camera Photos\\Photo_taken_" + num + ".jpg");
         // create error log
         File log = new File("error.txt");
         // clear log
@@ -127,7 +129,7 @@ public class GetFaceMarks {
         for (int i = 0; i < files.length; i++) {
             System.out.println("index " + i + " of " + files.length + ": " + files[i]);
             // get face
-            Face face = getFace(Utils.getPath("Photos/Camera Photos/Photo_taken_" + num + ".jpg", files[i]));
+            Face face = getFace(Utils.getPath("Photos\\Camera Photos\\Photo_taken_" + num + ".jpg", files[i]));
             // if face is null, skip
             if (face == null) {
                 continue;
