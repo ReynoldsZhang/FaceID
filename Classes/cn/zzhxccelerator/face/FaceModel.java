@@ -31,8 +31,7 @@ public class FaceModel {
         // get the average difference and ratio
         double averageDiff = (face1Result.diff + face2Result.diff + face3Result.diff) / 3;
         double averagePercentage = (face1Result.ratio + face2Result.ratio + face3Result.ratio) / 3;
-        CompareResult getDif = new CompareResult(averageDiff, averagePercentage);
-        return getDif;
+        return new CompareResult(averageDiff, averagePercentage);
     }
 
 
