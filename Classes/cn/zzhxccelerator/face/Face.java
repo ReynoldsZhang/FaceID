@@ -3,7 +3,6 @@ package cn.zzhxccelerator.face;
 import cn.zzhxccelerator.Facemark;
 import cn.zzhxccelerator.util.Pos;
 import cn.zzhxccelerator.weight.Weight;
-import cn.zzhxccelerator.weight.Weightable;
 
 import java.io.File;
 import java.io.Serializable;
@@ -11,7 +10,7 @@ import java.util.Arrays;
 
 import static cn.zzhxccelerator.util.Utils.*;
 
-public class Face extends Weightable implements Serializable {
+public class Face implements Serializable {
     public final File file;
     /**
      * <b>The face border</b>
