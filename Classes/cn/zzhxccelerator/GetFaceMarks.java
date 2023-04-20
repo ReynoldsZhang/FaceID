@@ -82,7 +82,9 @@ public class GetFaceMarks {
 
             // example:
             // create face model by giving three image paths
-            FaceModel model = new FaceModel("Photos\\Base Photos\\Base_Photo_1.png", "Photos\\Base Photos\\Base_Photo_2.png", "Photos\\Base Photos\\Base_Photo_3.png");
+            FaceModel model = new FaceModel(Utils.getPath("Photos", "Base Photos", "Base_Photo_1.png"),
+                    Utils.getPath("Photos", "Base Photos", "Base_Photo_2.png"),
+                    Utils.getPath("Photos", "Base Photos", "Base_Photo_3.png"));
             CompareResult isTheSameFace = model.getCompareResult(face);
 
             String isLocked = "";
@@ -111,7 +113,7 @@ public class GetFaceMarks {
     }
 
     public static void testAllFace(FaceModel base, int num) {
-        File dir = new File("Photos\\Camera Photos\\Photo_taken_" + num + ".jpg");
+        File dir = new File(Utils.getPath("Photos", "Base Photos"));
         // create error log
         File log = new File("error.txt");
         // clear log
@@ -129,7 +131,7 @@ public class GetFaceMarks {
         for (int i = 0; i < files.length; i++) {
             System.out.println("index " + i + " of " + files.length + ": " + files[i]);
             // get face
-            Face face = getFace(Utils.getPath("Photos\\Camera Photos\\Photo_taken_" + num + ".jpg", files[i]));
+            Face face = getFace(Utils.getPath("Photos", "Base Photos", files[i]));
             // if face is null, skip
             if (face == null) {
                 continue;
